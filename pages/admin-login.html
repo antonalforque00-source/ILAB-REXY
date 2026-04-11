@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoanSphere — Admin Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/auth.css">
+  <link rel="stylesheet" href="../css/loader.css">
+</head>
+<body>
+<!-- ═══════════════════════════════════════════════
+     INTRO LOADER — appears on every page load
+═══════════════════════════════════════════════ -->
+<div id="introLoader">
+  <!-- Background effects -->
+  <div class="loader-bg">
+    <div class="loader-grid"></div>
+    <div class="loader-orb loader-orb-1"></div>
+    <div class="loader-orb loader-orb-2"></div>
+    <div class="loader-orb loader-orb-3"></div>
+  </div>
+
+  <!-- Center content -->
+  <div class="loader-content">
+    <!-- Logo icon -->
+    <div class="loader-icon">₱</div>
+
+    <!-- Brand name -->
+    <div class="loader-brand">LoanSphere</div>
+
+    <!-- Sub tagline -->
+    <div class="loader-tagline">Loan Management System</div>
+
+    <!-- CODE NI ALFORQUE badge -->
+    <div class="loader-signature">
+      <div class="loader-sig-dot"></div>
+      <span class="loader-sig-text">CODE NI ALFORQUE</span>
+      <div class="loader-sig-dot"></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="loader-progress-wrap">
+      <div class="loader-progress-track">
+        <div class="loader-progress-fill" id="loaderFill"></div>
+      </div>
+      <div class="loader-progress-text" id="loaderMsg">Initializing LoanSphere...</div>
+    </div>
+
+    <!-- Bouncing dots -->
+    <div class="loader-dots">
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Page transition overlay (on navigation) -->
+<div id="pageTransition"></div>
+
+<div class="auth-page">
+  <!-- LEFT PANEL — Admin themed (red/orange) -->
+  <div class="auth-left theme-admin">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="auth-brand">
+      <div class="auth-brand-icon" style="background:linear-gradient(135deg,#f87171,#fb923c);box-shadow:0 8px 32px rgba(248,113,133,.35)">🔐</div>
+      <div class="auth-brand-name">Admin Portal</div>
+      <div class="auth-brand-sub">Secure administrative access</div>
+      <div class="auth-stats">
+        <div class="auth-stat"><span class="auth-stat-val" style="color:#fca5a5">Full</span><span class="auth-stat-lbl">System Access</span></div>
+        <div class="auth-stat"><span class="auth-stat-val" style="color:#fca5a5">All</span><span class="auth-stat-lbl">User Control</span></div>
+        <div class="auth-stat"><span class="auth-stat-val" style="color:#fca5a5">24/7</span><span class="auth-stat-lbl">Monitoring</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL — Admin Login Form -->
+  <div class="auth-right">
+    <div class="auth-form-box">
+      <div class="auth-logo-sm">
+        <div class="auth-logo-dot theme-admin">🔐</div>
+        Admin Access
+      </div>
+      <h1 class="auth-title">Admin Sign In</h1>
+      <p class="auth-sub">Enter your admin credentials login details.</p>
+
+      <div class="alert alert-danger" id="adminErr"></div>
+
+      <div class="form-group">
+        <label>Admin Username <span class="req">*</span></label>
+        <div class="input-wrap">
+          <span class="input-icon">👨‍💼</span>
+          <input type="text" class="form-control" id="adminUser" placeholder="Enter admin username" autocomplete="off" onkeypress="if(event.key==='Enter')doAdminLogin()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password <span class="req">*</span></label>
+        <div class="input-wrap">
+          <span class="input-icon">🔑</span>
+          <input type="password" class="form-control" id="adminPw" placeholder="Enter admin password" autocomplete="off" onkeypress="if(event.key==='Enter')doAdminLogin()">
+          <button class="toggle-pass" onclick="togglePassField('adminPw',this)">👁</button>
+        </div>
+      </div>
+
+      <button class="btn-auth admin-btn" onclick="doAdminLogin()">Sign In as Admin</button>
+
+      <div class="auth-links">
+        <a href="login.html">← Back to User Login</a>
+        <a href="../index.html" style="color:var(--text3);font-size:.8rem">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+
+
+
+function togglePassField(id, btn) {
+  const i = document.getElementById(id);
+  i.type = i.type === 'password' ? 'text' : 'password';
+  btn.textContent = i.type === 'password' ? '👁' : '🙈';
+}
+
+function doAdminLogin() {
+  const u = document.getElementById('adminUser').value.trim();
+  const p = document.getElementById('adminPw').value;
+  const e = document.getElementById('adminErr');
+  e.classList.remove('show');
+
+  if (!u || !p) { e.textContent = 'Please enter both username and password.'; e.classList.add('show'); return; }
+
+  if (u === 'admin' && p === 'Admin@LoanSphere2024!') {
+    sessionStorage.setItem('ls_admin', '1');
+    sessionStorage.removeItem('ls_user');
+    window.location.href = '../dashboard.html';
+  } else {
+    e.textContent = 'Incorrect username or password. Please try again.';
+    e.classList.add('show');
+  }
+}
+</script>
+<script src="../js/loader.js"></script>
+</body>
+</html>

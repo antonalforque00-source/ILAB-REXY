@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoanSphere — Sign In</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="../css/auth.css">
+  <link rel="stylesheet" href="../css/loader.css">
+</head>
+<body>
+<!-- ═══════════════════════════════════════════════
+     INTRO LOADER — appears on every page load
+═══════════════════════════════════════════════ -->
+<div id="introLoader">
+  <!-- Background effects -->
+  <div class="loader-bg">
+    <div class="loader-grid"></div>
+    <div class="loader-orb loader-orb-1"></div>
+    <div class="loader-orb loader-orb-2"></div>
+    <div class="loader-orb loader-orb-3"></div>
+  </div>
+
+  <!-- Center content -->
+  <div class="loader-content">
+    <!-- Logo icon -->
+    <div class="loader-icon">₱</div>
+
+    <!-- Brand name -->
+    <div class="loader-brand">LoanSphere</div>
+
+    <!-- Sub tagline -->
+    <div class="loader-tagline">Loan Management System</div>
+
+    <!-- CODE NI ALFORQUE badge -->
+    <div class="loader-signature">
+      <div class="loader-sig-dot"></div>
+      <span class="loader-sig-text">CODE NI ALFORQUE</span>
+      <div class="loader-sig-dot"></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="loader-progress-wrap">
+      <div class="loader-progress-track">
+        <div class="loader-progress-fill" id="loaderFill"></div>
+      </div>
+      <div class="loader-progress-text" id="loaderMsg">Initializing LoanSphere...</div>
+    </div>
+
+    <!-- Bouncing dots -->
+    <div class="loader-dots">
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Page transition overlay (on navigation) -->
+<div id="pageTransition"></div>
+
+<div class="auth-page">
+  <!-- LEFT PANEL -->
+  <div class="auth-left theme-user">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="auth-brand">
+      <div class="auth-brand-icon">₱</div>
+      <div class="auth-brand-name">LoanSphere</div>
+      <div class="auth-brand-sub">Your trusted lending partner</div>
+      <div class="auth-stats">
+        <div class="auth-stat"><span class="auth-stat-val">2,400+</span><span class="auth-stat-lbl">Members</span></div>
+        <div class="auth-stat"><span class="auth-stat-val">₱18M+</span><span class="auth-stat-lbl">Disbursed</span></div>
+        <div class="auth-stat"><span class="auth-stat-val">99%</span><span class="auth-stat-lbl">Approval</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL — Login Form -->
+  <div class="auth-right">
+    <div class="auth-form-box">
+      <div class="auth-logo-sm">
+        <div class="auth-logo-dot theme-user">₱</div>
+        LoanSphere
+      </div>
+      <h1 class="auth-title">Welcome back</h1>
+      <p class="auth-sub">Sign in with your email and password.</p>
+
+      <div class="alert alert-danger" id="loginErr"></div>
+      <div class="alert alert-info"   id="loginLoad">⏳ Signing in...</div>
+
+      <div class="form-group">
+        <label>Email Address <span class="req">*</span></label>
+        <div class="input-wrap">
+          <span class="input-icon">📧</span>
+          <input type="email" class="form-control" id="loginEmail" placeholder="Enter your email address" onkeypress="if(event.key==='Enter')doLogin()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Password <span class="req">*</span></label>
+        <div class="input-wrap">
+          <span class="input-icon">🔒</span>
+          <input type="password" class="form-control" id="loginPw" placeholder="Enter your password" onkeypress="if(event.key==='Enter')doLogin()">
+          <button class="toggle-pass" onclick="togglePassField('loginPw',this)">👁</button>
+        </div>
+      </div>
+
+      <button class="btn-auth user-btn" onclick="doLogin()">Sign In</button>
+
+      <div class="auth-links">
+        <span>Don't have an account? <a href="register.html">Register here</a></span>
+        <a href="admin-login.html" class="admin-lnk">🔒 Admin Login</a>
+        <a href="../index.html" style="color:var(--text3);font-size:.8rem">← Back to Home</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/db.js"></script>
+<script src="../js/utils.js"></script>
+<script>
+/* Restore theme */
+
+
+function togglePassField(id, btn) {
+  const i = document.getElementById(id);
+  i.type = i.type === 'password' ? 'text' : 'password';
+  btn.textContent = i.type === 'password' ? '👁' : '🙈';
+}
+
+function showErr(msg) {
+  const e = document.getElementById('loginErr');
+  e.textContent = msg; e.classList.add('show');
+  document.getElementById('loginLoad').classList.remove('show');
+}
+
+// Apply theme + icon on load
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pw    = document.getElementById('loginPw').value;
+  document.getElementById('loginErr').classList.remove('show');
+
+  if (!email) { showErr('Please enter your email address.'); return; }
+  if (!pw)    { showErr('Please enter your password.'); return; }
+
+  const url = localStorage.getItem('ls_sb_url');
+  const key = localStorage.getItem('ls_sb_key');
+  if (!url || !key) { showErr('System not connected. Contact administrator.'); return; }
+
+  document.getElementById('loginLoad').classList.add('show');
+
+  try {
+    await initSupabase(url, key);
+    const profile = await DB.loginUser(email, pw);
+
+    if (!profile) { showErr('Incorrect email or password. Please try again.'); return; }
+    if (profile.status === 'pending')  { showErr('Your account is pending admin approval. Please wait.'); return; }
+    if (profile.status === 'disabled') { showErr('Your account has been disabled. Contact the admin.'); return; }
+
+    document.getElementById('loginLoad').classList.remove('show');
+    sessionStorage.setItem('ls_user', JSON.stringify(profile));
+    window.location.href = '../dashboard.html';
+  } catch(e) {
+    showErr(e.message || 'Login failed. Please try again.');
+  }
+}
+</script>
+<script src="../js/loader.js"></script>
+</body>
+</html>

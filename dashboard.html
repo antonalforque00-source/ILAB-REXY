@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LoanSphere — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/loader.css">
+</head>
+<body>
+<!-- ═══════════════════════════════════════════════
+     INTRO LOADER — appears on every page load
+═══════════════════════════════════════════════ -->
+<div id="introLoader">
+  <!-- Background effects -->
+  <div class="loader-bg">
+    <div class="loader-grid"></div>
+    <div class="loader-orb loader-orb-1"></div>
+    <div class="loader-orb loader-orb-2"></div>
+    <div class="loader-orb loader-orb-3"></div>
+  </div>
+
+  <!-- Center content -->
+  <div class="loader-content">
+    <!-- Logo icon -->
+    <div class="loader-icon">₱</div>
+
+    <!-- Brand name -->
+    <div class="loader-brand">LoanSphere</div>
+
+    <!-- Sub tagline -->
+    <div class="loader-tagline">Loan Management System</div>
+
+    <!-- CODE NI ALFORQUE badge -->
+    <div class="loader-signature">
+      <div class="loader-sig-dot"></div>
+      <span class="loader-sig-text">CODE NI ALFORQUE</span>
+      <div class="loader-sig-dot"></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="loader-progress-wrap">
+      <div class="loader-progress-track">
+        <div class="loader-progress-fill" id="loaderFill"></div>
+      </div>
+      <div class="loader-progress-text" id="loaderMsg">Initializing LoanSphere...</div>
+    </div>
+
+    <!-- Bouncing dots -->
+    <div class="loader-dots">
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+      <div class="loader-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Page transition overlay (on navigation) -->
+<div id="pageTransition"></div>
+
+
+<!-- USER APP -->
+<div class="app" id="userApp" style="display:none">
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-icon">₱</div>
+      <div><div class="sb-logo-text">LoanSphere</div><div class="sb-logo-sub">Loan Management</div></div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar" id="sidebarAvatar">U</div>
+      <div><div class="sb-user-name" id="sidebarName">User</div><div class="sb-user-role" id="sidebarRole">Basic</div></div>
+    </div>
+    <nav class="sb-nav">
+      <div class="nav-label">Main</div>
+      <div class="nav-item active" onclick="switchPage('dashboard')"><span>📊</span> Dashboard</div>
+      <div class="nav-item" onclick="switchPage('loans')"><span>💳</span> My Loans</div>
+      <div class="nav-item" onclick="switchPage('billing')"><span>📋</span> Billing <span class="nav-badge" id="billingBadge" style="display:none">!</span></div>
+      <div class="nav-label" id="premiumNav">Premium</div>
+      <div class="nav-item" onclick="switchPage('savings')" id="savingsNav"><span>🏦</span> Savings</div>
+      <div class="nav-item" onclick="switchPage('moneyback')" id="moneybackNav"><span>💰</span> Money Back</div>
+      <div class="nav-label">Account</div>
+      <div class="nav-item" onclick="switchPage('profile')"><span>👤</span> My Profile</div>
+      <div class="nav-item" onclick="switchPage('transactions')"><span>📑</span> Transactions</div>
+    </nav>
+    <div class="sb-footer"><div class="nav-item logout" onclick="doLogout()"><span>🚪</span> Logout</div></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-right">
+        <div class="db-status"><div class="db-dot connected" id="dbDot"></div><span id="dbStatusText">Connected</span></div>
+        <button class="icon-btn" onclick="toggleTheme()">🌙</button>
+        <button class="btn btn-primary btn-sm" onclick="showModal('applyLoanModal')">+ Apply Loan</button>
+      </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="dashboardPage">
+      <div class="page-hd"><div><h2>Welcome back, <span id="dashName">User</span>! 👋</h2><p>Your financial snapshot for today.</p></div></div>
+      <div class="stats-grid">
+        <div class="stat-card blue"><div class="stat-icon-bg">💳</div><div class="stat-label">Loan Balance</div><div class="stat-value" id="dashLoanBal">₱0.00</div><div class="stat-sub">Outstanding</div></div>
+        <div class="stat-card green"><div class="stat-icon-bg">🏦</div><div class="stat-label">Savings</div><div class="stat-value" id="dashSavings">₱0.00</div><div class="stat-sub">Available</div></div>
+        <div class="stat-card amber"><div class="stat-icon-bg">📅</div><div class="stat-label">Next Payment</div><div class="stat-value" id="dashDue">—</div><div class="stat-sub" id="dashDueDate">No active billing</div></div>
+        <div class="stat-card rose"><div class="stat-icon-bg">📊</div><div class="stat-label">Loan Limit</div><div class="stat-value">₱10,000</div><div class="stat-sub">Max allowable</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card"><div class="card-hd"><h3>📋 Recent Billing</h3></div><div id="dashBillingList"><div class="empty-state"><div class="es-icon">📭</div><p>No billing records yet.</p></div></div></div>
+        <div class="card"><div class="card-hd"><h3>💳 Recent Loans</h3></div><div id="dashLoanList"><div class="empty-state"><div class="es-icon">📭</div><p>No loans yet.</p></div></div></div>
+      </div>
+    </div>
+
+    <!-- MY LOANS -->
+    <div class="page" id="loansPage">
+      <div class="page-hd"><div><h2>My Loans</h2><p>View your loan applications.</p></div><button class="btn btn-primary" onclick="showModal('applyLoanModal')">+ Apply Loan</button></div>
+      <div class="card"><div class="card-hd"><h3>💳 Loan History</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Amount</th><th>Received</th><th>Term</th><th>Monthly</th><th>Status</th><th>Date</th></tr></thead><tbody id="userLoansBody"><tr><td colspan="7"><div class="empty-state"><div class="es-icon">📭</div><p>No loans yet.</p></div></td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="page" id="billingPage">
+      <div class="page-hd"><div><h2>Billing</h2><p>Your monthly payment schedule.</p></div></div>
+      <div class="card"><div class="card-hd"><h3>📋 Billing Records</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Period</th><th>Base</th><th>Interest</th><th>Penalty</th><th>Total</th><th>Due Date</th><th>Status</th></tr></thead><tbody id="userBillingBody"><tr><td colspan="8"><div class="empty-state"><div class="es-icon">📭</div><p>No billing records.</p></div></td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- SAVINGS -->
+    <div class="page" id="savingsPage">
+      <div class="page-hd"><div><h2>Savings</h2><p>Manage your savings account.</p></div><div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="showModal('depositModal')">+ Deposit</button><button class="btn btn-secondary" onclick="showModal('withdrawModal')">Withdraw</button></div></div>
+      <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat-card green"><div class="stat-icon-bg">🏦</div><div class="stat-label">Balance</div><div class="stat-value" id="savingsBalance">₱0.00</div></div>
+        <div class="stat-card blue"><div class="stat-icon-bg">📥</div><div class="stat-label">Total Deposited</div><div class="stat-value" id="savingsTotalDep">₱0.00</div></div>
+        <div class="stat-card rose"><div class="stat-icon-bg">📤</div><div class="stat-label">Total Withdrawn</div><div class="stat-value" id="savingsTotalWith">₱0.00</div></div>
+      </div>
+      <div class="card"><div class="card-hd"><h3>📑 Savings Transactions</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Txn ID</th><th>Category</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="userSavTxnBody"><tr><td colspan="6"><div class="empty-state"><div class="es-icon">📭</div><p>No transactions.</p></div></td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- MONEY BACK -->
+    <div class="page" id="moneybackPage">
+      <div class="page-hd"><div><h2>Money Back</h2><p>Your earned distributions.</p></div></div>
+      <div class="stats-grid" style="grid-template-columns:repeat(2,1fr)">
+        <div class="stat-card green"><div class="stat-icon-bg">💰</div><div class="stat-label">Total Earned</div><div class="stat-value" id="mbTotal">₱0.00</div></div>
+        <div class="stat-card amber"><div class="stat-icon-bg">📅</div><div class="stat-label">Last Distribution</div><div class="stat-value" id="mbLast">—</div></div>
+      </div>
+      <div class="card"><div class="card-hd"><h3>💰 Distribution History</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Amount</th><th>Date</th><th>Note</th></tr></thead><tbody id="mbBody"><tr><td colspan="4"><div class="empty-state"><div class="es-icon">📭</div><p>No distributions yet.</p></div></td></tr></tbody></table></div></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="page" id="profilePage">
+      <div class="page-hd"><div><h2>My Profile</h2><p>Your account information.</p></div></div>
+      <div class="card"><div class="profile-hero"><div class="profile-av" id="profileAvatar">U</div><div><div class="profile-name" id="profileName">User</div><div class="profile-type" id="profileType">Basic Member</div><div id="profileStatus"></div></div></div><div class="profile-details" id="profileDetails"></div></div>
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="page" id="transactionsPage">
+      <div class="page-hd"><div><h2>Transactions</h2><p>Your full financial history.</p></div></div>
+      <div class="card"><div class="card-hd"><h3>📑 All Transactions</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Txn ID</th><th>Category</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="userTxnBody"><tr><td colspan="6"><div class="empty-state"><div class="es-icon">📭</div><p>No transactions.</p></div></td></tr></tbody></table></div></div>
+    </div>
+  </main>
+</div>
+
+<!-- ADMIN APP -->
+<div class="app" id="adminApp" style="display:none">
+  <aside class="sidebar admin-sidebar" id="adminSidebar">
+    <div class="sb-logo"><div class="sb-logo-icon" style="background:linear-gradient(135deg,#f87171,#fb923c)">🔐</div><div><div class="sb-logo-text">LoanSphere</div><div class="sb-logo-sub">Admin Portal</div></div></div>
+    <div class="sb-user"><div class="sb-avatar admin-av">AD</div><div><div class="sb-user-name">Administrator</div><div class="sb-user-role" style="color:#f87171">Super Admin</div></div></div>
+    <nav class="sb-nav">
+      <div class="nav-label">Management</div>
+      <div class="nav-item active" onclick="switchAdminPage('adminDashboard')"><span>📊</span> Dashboard</div>
+      <div class="nav-item" onclick="switchAdminPage('adminUsers')"><span>👥</span> Users <span class="nav-badge" id="pendingRegBadge">0</span></div>
+      <div class="nav-item" onclick="switchAdminPage('adminLoans')"><span>💳</span> Loans <span class="nav-badge yellow" id="pendingLoanBadge">0</span></div>
+      <div class="nav-item" onclick="switchAdminPage('adminSavings')"><span>🏦</span> Savings</div>
+      <div class="nav-item" onclick="switchAdminPage('adminBilling')"><span>📋</span> Billing</div>
+      <div class="nav-label">System</div>
+      <div class="nav-item" onclick="switchAdminPage('adminEarnings')"><span>💰</span> Earnings</div>
+      <div class="nav-item" onclick="switchAdminPage('adminBlocked')"><span>🚫</span> Blocked Emails</div>
+    </nav>
+    <div class="sb-footer"><div class="nav-item logout" onclick="doLogout()"><span>🚪</span> Logout</div></div>
+  </aside>
+  <main class="main">
+    <div class="topbar"><div class="topbar-title" id="adminTopbarTitle">Admin Dashboard</div><div class="topbar-right"><button class="icon-btn" onclick="toggleTheme()">🌙</button><span class="badge badge-red">🔐 Admin Mode</span></div></div>
+    <div class="page active" id="adminDashboardPage">
+      <div class="page-hd"><div><h2>System Overview</h2><p>Complete platform statistics.</p></div></div>
+      <div class="stats-grid">
+        <div class="stat-card blue"><div class="stat-icon-bg">👥</div><div class="stat-label">Active Users</div><div class="stat-value" id="aStatUsers">0</div><div class="stat-sub">Registered members</div></div>
+        <div class="stat-card green"><div class="stat-icon-bg">💳</div><div class="stat-label">Active Loans</div><div class="stat-value" id="aStatLoans">0</div><div class="stat-sub">Currently active</div></div>
+        <div class="stat-card amber"><div class="stat-icon-bg">⏳</div><div class="stat-label">Pending</div><div class="stat-value" id="aStatPending">0</div><div class="stat-sub">Needs approval</div></div>
+        <div class="stat-card rose"><div class="stat-icon-bg">🏦</div><div class="stat-label">Total Savings</div><div class="stat-value" id="aStatSavings">₱0</div><div class="stat-sub">All members</div></div>
+      </div>
+      <div class="two-col">
+        <div class="card"><div class="card-hd"><h3>⏳ Pending Registrations</h3></div><div class="table-wrap"><table><thead><tr><th>Name</th><th>Type</th><th>Applied</th><th>Action</th></tr></thead><tbody id="aPendingRegBody"><tr><td colspan="4"><div class="empty-state"><div class="es-icon">✅</div><p>None pending.</p></div></td></tr></tbody></table></div></div>
+        <div class="card"><div class="card-hd"><h3>💳 Pending Loans</h3></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Amount</th><th>Term</th><th>Action</th></tr></thead><tbody id="aPendingLoanBody"><tr><td colspan="4"><div class="empty-state"><div class="es-icon">✅</div><p>None pending.</p></div></td></tr></tbody></table></div></div>
+      </div>
+    </div>
+    <div class="page" id="adminUsersPage">
+      <div class="page-hd"><div><h2>User Management</h2><p>All users visible in Supabase → Table Editor → profiles.</p></div><div class="search-wrap"><input type="text" placeholder="Search users..." oninput="searchUsers(this.value)"></div></div>
+      <div class="card"><div class="card-hd"><h3>👥 All Users</h3><div class="filters"><button class="filter-btn active" onclick="filterUsers(this,'all')">All</button><button class="filter-btn" onclick="filterUsers(this,'pending')">Pending</button><button class="filter-btn" onclick="filterUsers(this,'active')">Active</button><button class="filter-btn" onclick="filterUsers(this,'disabled')">Disabled</button></div></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Name</th><th>Type</th><th>Email</th><th>Status</th><th>Applied</th><th>Actions</th></tr></thead><tbody id="adminUsersBody"><tr><td colspan="7"><div class="empty-state"><div class="es-icon">📭</div><p>No users yet.</p></div></td></tr></tbody></table></div></div>
+    </div>
+    <div class="page" id="adminLoansPage">
+      <div class="page-hd"><div><h2>Loan Management</h2><p>Review and process loans.</p></div></div>
+      <div class="card"><div class="card-hd"><h3>💳 All Loans</h3><div class="filters"><button class="filter-btn active" onclick="filterAdminLoans(this,'all')">All</button><button class="filter-btn" onclick="filterAdminLoans(this,'Pending')">Pending</button><button class="filter-btn" onclick="filterAdminLoans(this,'Approved')">Approved</button><button class="filter-btn" onclick="filterAdminLoans(this,'Rejected')">Rejected</button></div></div><div class="table-wrap"><table><thead><tr><th>#</th><th>User</th><th>Amount</th><th>Term</th><th>Applied</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminLoansBody"></tbody></table></div></div>
+    </div>
+    <div class="page" id="adminSavingsPage">
+      <div class="page-hd"><div><h2>Savings Management</h2><p>Process withdrawal requests.</p></div></div>
+      <div class="card"><div class="card-hd"><h3>💸 Withdrawal Requests</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>User</th><th>Amount</th><th>Requested</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminWithdrawBody"></tbody></table></div></div>
+      <div class="card" style="margin-top:18px"><div class="card-hd"><h3>📑 All Savings Transactions</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Txn ID</th><th>User</th><th>Category</th><th>Amount</th><th>Date</th><th>Status</th></tr></thead><tbody id="adminSavTxnBody"></tbody></table></div></div>
+    </div>
+    <div class="page" id="adminBillingPage">
+      <div class="page-hd"><div><h2>Billing</h2><p>All member billing records.</p></div></div>
+      <div class="card"><div class="card-hd"><h3>📋 Billing Records</h3></div><div class="table-wrap"><table><thead><tr><th>User</th><th>Period</th><th>Base</th><th>Interest</th><th>Penalty</th><th>Total</th><th>Due Date</th><th>Status</th></tr></thead><tbody id="adminBillingBody"></tbody></table></div></div>
+    </div>
+    <div class="page" id="adminEarningsPage">
+      <div class="page-hd"><div><h2>Company Earnings</h2><p>Track income and distribute money back.</p></div><button class="btn btn-primary" onclick="showModal('addEarningsModal')">+ Add Entry</button></div>
+      <div class="stats-grid">
+        <div class="stat-card green"><div class="stat-icon-bg">📈</div><div class="stat-label">Total Income</div><div class="stat-value" id="aEarnTotal">₱0.00</div></div>
+        <div class="stat-card blue"><div class="stat-icon-bg">💰</div><div class="stat-label">Money Back Pool (2%)</div><div class="stat-value" id="aEarnPool">₱0.00</div></div>
+        <div class="stat-card amber"><div class="stat-icon-bg">⭐</div><div class="stat-label">Premium Members</div><div class="stat-value" id="aEarnMembers">0</div></div>
+        <div class="stat-card rose"><div class="stat-icon-bg">👤</div><div class="stat-label">Per Member Share</div><div class="stat-value" id="aEarnPerMember">₱0.00</div></div>
+      </div>
+      <button class="btn btn-success" style="margin-bottom:18px" onclick="distributeMoneyBack()">💸 Distribute Money Back</button>
+      <div class="card"><div class="card-hd"><h3>📊 Earnings History</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Description</th><th>Amount</th><th>Date</th></tr></thead><tbody id="earningsBody"></tbody></table></div></div>
+    </div>
+    <div class="page" id="adminBlockedPage">
+      <div class="page-hd"><div><h2>Blocked Emails</h2><p>Prevent specific emails from registering.</p></div><button class="btn btn-danger" onclick="showModal('blockEmailModal')">🚫 Block Email</button></div>
+      <div class="card"><div class="card-hd"><h3>🚫 Blocked List</h3></div><div class="table-wrap"><table><thead><tr><th>#</th><th>Email</th><th>Reason</th><th>Date</th><th>Actions</th></tr></thead><tbody id="blockedEmailsBody"></tbody></table></div></div>
+    </div>
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="applyLoanModal"><div class="modal"><div class="modal-hd"><h3>💳 Apply for a Loan</h3><button class="modal-close" onclick="closeModal('applyLoanModal')">✕</button></div><div class="modal-body"><div class="alert alert-info show" style="margin-bottom:14px">Range: <strong>₱5,000–₱10,000</strong> · Interest: <strong>3%</strong> upfront</div><div class="form-group"><label>Loan Amount <span class="req">*</span></label><select class="form-control" id="loanAmountSelect" onchange="updateLoanCalc()"><option value="">Select amount</option><option value="5000">₱5,000</option><option value="6000">₱6,000</option><option value="7000">₱7,000</option><option value="8000">₱8,000</option><option value="9000">₱9,000</option><option value="10000">₱10,000</option></select></div><div class="form-group"><label>Payment Term <span class="req">*</span></label><div class="term-btns"><button class="filter-btn" onclick="selectTerm(this,1)">1 Month</button><button class="filter-btn" onclick="selectTerm(this,3)">3 Months</button><button class="filter-btn" onclick="selectTerm(this,6)">6 Months</button><button class="filter-btn" onclick="selectTerm(this,12)">12 Months</button></div></div><div class="loan-calc" id="loanCalcBox" style="display:none"><div class="calc-title">Loan Breakdown</div><div class="calc-row"><span>Amount</span><span id="calcAmount">—</span></div><div class="calc-row"><span>Interest (3%)</span><span id="calcInterest" class="neg">—</span></div><div class="calc-row"><span>You Receive</span><span id="calcReceived" class="pos">—</span></div><div class="calc-row"><span>Term</span><span id="calcTerm">—</span></div><div class="calc-row"><span>Monthly Payment</span><span id="calcMonthly">—</span></div><div class="calc-row total-row"><span>Total to Pay</span><span id="calcTotal">—</span></div></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('applyLoanModal')">Cancel</button><button class="btn btn-primary" onclick="submitLoanApplication()">Submit Application</button></div></div></div>
+<div class="modal-overlay" id="depositModal"><div class="modal"><div class="modal-hd"><h3>🏦 Deposit to Savings</h3><button class="modal-close" onclick="closeModal('depositModal')">✕</button></div><div class="modal-body"><div class="alert alert-info show" style="margin-bottom:14px">Min: <strong>₱100</strong> | Max: <strong>₱1,000</strong></div><div class="form-group"><label>Amount <span class="req">*</span></label><input type="number" class="form-control" id="depositAmount" placeholder="₱100–₱1,000" min="100" max="1000"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('depositModal')">Cancel</button><button class="btn btn-success" onclick="submitDeposit()">Deposit</button></div></div></div>
+<div class="modal-overlay" id="withdrawModal"><div class="modal"><div class="modal-hd"><h3>💸 Savings Withdrawal</h3><button class="modal-close" onclick="closeModal('withdrawModal')">✕</button></div><div class="modal-body"><div class="alert alert-warn show" style="margin-bottom:14px">⚠️ Requires admin approval · Min: ₱500 | Max: ₱5,000/day</div><div class="form-group"><label>Amount <span class="req">*</span></label><input type="number" class="form-control" id="withdrawAmount" placeholder="₱500–₱5,000" min="500" max="5000"></div><div class="form-group"><label>Reason</label><input type="text" class="form-control" id="withdrawNote" placeholder="Optional note"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('withdrawModal')">Cancel</button><button class="btn btn-primary" onclick="submitWithdrawRequest()">Submit Request</button></div></div></div>
+<div class="modal-overlay" id="rejectLoanModal"><div class="modal"><div class="modal-hd"><h3>❌ Reject Loan</h3><button class="modal-close" onclick="closeModal('rejectLoanModal')">✕</button></div><div class="modal-body"><div class="form-group"><label>Reason <span class="req">*</span></label><textarea class="form-control" id="rejectReason" rows="4" placeholder="Provide reason..."></textarea></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('rejectLoanModal')">Cancel</button><button class="btn btn-danger" onclick="confirmRejectLoan()">Reject</button></div></div></div>
+<div class="modal-overlay" id="blockEmailModal"><div class="modal"><div class="modal-hd"><h3>🚫 Block Email</h3><button class="modal-close" onclick="closeModal('blockEmailModal')">✕</button></div><div class="modal-body"><div class="form-group"><label>Email <span class="req">*</span></label><input type="email" class="form-control" id="blockEmailInput" placeholder="email@example.com"></div><div class="form-group"><label>Reason <span class="req">*</span></label><input type="text" class="form-control" id="blockReasonInput" placeholder="Reason for blocking"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('blockEmailModal')">Cancel</button><button class="btn btn-danger" onclick="confirmBlockEmail()">Block</button></div></div></div>
+<div class="modal-overlay" id="addEarningsModal"><div class="modal"><div class="modal-hd"><h3>💰 Add Earnings</h3><button class="modal-close" onclick="closeModal('addEarningsModal')">✕</button></div><div class="modal-body"><div class="form-group"><label>Description <span class="req">*</span></label><input type="text" class="form-control" id="earningDesc" placeholder="e.g. Q1 Revenue"></div><div class="form-group"><label>Amount <span class="req">*</span></label><input type="number" class="form-control" id="earningAmount" placeholder="₱0.00"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeModal('addEarningsModal')">Cancel</button><button class="btn btn-success" onclick="addEarnings()">Add</button></div></div></div>
+<div class="modal-overlay" id="userDetailModal"><div class="modal wide"><div class="modal-hd"><h3>👤 User Details</h3><button class="modal-close" onclick="closeModal('userDetailModal')">✕</button></div><div id="userDetailContent" style="padding:0 0 8px"></div></div></div>
+
+<!-- Toast -->
+<div id="toast"><span id="toastIcon"></span><span id="toastMsg" style="font-size:.87rem"></span></div>
+
+<!-- JS Files -->
+<script src="js/db.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/user.js"></script>
+<script src="js/admin.js"></script>
+
+<script>
+// Theme applied by applyStoredTheme() after scripts load
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('active'); });
+});
+
+window.addEventListener('DOMContentLoaded', async () => {
+  applyStoredTheme();
+  const url = localStorage.getItem('ls_sb_url');
+  const key = localStorage.getItem('ls_sb_key');
+  if (!url || !key) { window.location.href = 'pages/login.html'; return; }
+
+  try {
+    await initSupabase(url, key);
+    updateDbStatus(true);
+  } catch(e) {
+    window.location.href = 'pages/login.html'; return;
+  }
+
+  const adminFlag = sessionStorage.getItem('ls_admin');
+  const userJson  = sessionStorage.getItem('ls_user');
+
+  if (adminFlag === '1') {
+    STATE.isAdmin = true; launchAdminApp(); return;
+  }
+  if (userJson) {
+    try {
+      const profile = JSON.parse(userJson);
+      if (profile?.id) {
+        const fresh = await DB.getProfileById(profile.id);
+        if (fresh && fresh.status === 'active') {
+          STATE.currentUser = fresh; launchUserApp(fresh); return;
+        }
+      }
+    } catch(e) {}
+  }
+  window.location.href = 'pages/login.html';
+});
+</script>
+<script src="js/loader.js"></script>
+</body>
+</html>

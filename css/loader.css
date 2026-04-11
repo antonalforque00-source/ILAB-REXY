@@ -1,0 +1,298 @@
+/* =====================================================
+   LOANSPHERE — Page Loader (css/loader.css)
+   Intro loader: "CODE NI ALFORQUE"
+   Smooth loading animation on every page
+   ===================================================== */
+
+/* ── Intro Loader Overlay ── */
+#introLoader {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #0d0f14;
+  transition: opacity .5s ease, visibility .5s ease;
+}
+
+#introLoader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ── Loader Background Effects ── */
+.loader-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.loader-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: loaderOrb 6s ease-in-out infinite;
+}
+
+.loader-orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(108,138,255,.2), transparent);
+  top: -150px; left: -150px;
+  animation-delay: 0s;
+}
+
+.loader-orb-2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(167,139,250,.15), transparent);
+  bottom: -100px; right: -100px;
+  animation-delay: 2s;
+}
+
+.loader-orb-3 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(245,197,24,.08), transparent);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 1s;
+}
+
+@keyframes loaderOrb {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50%       { transform: scale(1.15) translateY(-20px); }
+}
+
+/* ── Grid lines decoration ── */
+.loader-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(108,138,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(108,138,255,.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridPulse 3s ease-in-out infinite;
+}
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+/* ── Center content ── */
+.loader-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ── Logo Icon ── */
+.loader-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #6c8aff, #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 28px;
+  box-shadow: 0 0 40px rgba(108,138,255,.5), 0 0 80px rgba(108,138,255,.2);
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(108,138,255,.5), 0 0 80px rgba(108,138,255,.2); transform: scale(1); }
+  50%       { box-shadow: 0 0 60px rgba(108,138,255,.7), 0 0 120px rgba(108,138,255,.35); transform: scale(1.05); }
+}
+
+/* ── Brand Name ── */
+.loader-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #e8eaf6;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .2s both;
+}
+
+/* ── Tagline ── */
+.loader-tagline {
+  font-family: 'Outfit', sans-serif;
+  font-size: .82rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+  margin-bottom: 40px;
+  animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .35s both;
+}
+
+/* ── "CODE NI ALFORQUE" badge ── */
+.loader-signature {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(108,138,255,.1);
+  border: 1px solid rgba(108,138,255,.25);
+  border-radius: 30px;
+  padding: 8px 20px;
+  margin-bottom: 44px;
+  animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .5s both;
+}
+
+.loader-sig-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6c8aff;
+  animation: sigBlink 1.2s ease-in-out infinite;
+}
+
+@keyframes sigBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .4; transform: scale(.7); }
+}
+
+.loader-sig-text {
+  font-family: 'Outfit', sans-serif;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #8ba3ff;
+}
+
+/* ── Progress Bar ── */
+.loader-progress-wrap {
+  width: 280px;
+  animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .6s both;
+}
+
+.loader-progress-track {
+  height: 3px;
+  background: rgba(255,255,255,.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.loader-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #6c8aff, #a78bfa, #6c8aff);
+  background-size: 200% 100%;
+  animation: progressFill 2.2s cubic-bezier(.4,0,.6,1) .7s forwards,
+             progressShimmer 1.5s linear .7s infinite;
+}
+
+@keyframes progressFill {
+  0%   { width: 0%; }
+  30%  { width: 45%; }
+  60%  { width: 72%; }
+  85%  { width: 90%; }
+  100% { width: 100%; }
+}
+
+@keyframes progressShimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.loader-progress-text {
+  text-align: center;
+  font-family: 'Outfit', sans-serif;
+  font-size: .72rem;
+  color: rgba(255,255,255,.3);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── Spinner dots ── */
+.loader-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 28px;
+  animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .7s both;
+}
+
+.loader-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(108,138,255,.5);
+  animation: dotBounce 1.4s ease-in-out infinite;
+}
+
+.loader-dot:nth-child(1) { animation-delay: 0s; }
+.loader-dot:nth-child(2) { animation-delay: .2s; }
+.loader-dot:nth-child(3) { animation-delay: .4s; }
+
+@keyframes dotBounce {
+  0%, 80%, 100% { transform: scale(1);   opacity: .5; }
+  40%            { transform: scale(1.6); opacity: 1;  }
+}
+
+/* ── Slide-out transition ── */
+.loader-slide-out {
+  animation: loaderSlideOut .6s cubic-bezier(.4,0,.2,1) forwards !important;
+}
+
+@keyframes loaderSlideOut {
+  0%   { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; }
+}
+
+/* ── Page transition overlay (on navigation) ── */
+#pageTransition {
+  position: fixed;
+  inset: 0;
+  z-index: 98888;
+  background: #0d0f14;
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+#pageTransition.entering {
+  animation: pageEnter .35s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+#pageTransition.leaving {
+  animation: pageLeave .35s cubic-bezier(.4,0,.2,1) forwards;
+}
+
+@keyframes pageEnter {
+  from { transform: scaleX(0); opacity: 1; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes pageLeave {
+  from { transform: scaleX(1); opacity: 1; }
+  to   { transform: scaleX(0); transform-origin: right; opacity: 0; }
+}
+
+/* ── Fade-in for page body content ── */
+.page-fade-in {
+  animation: bodyFadeIn .5s ease .1s both;
+}
+
+@keyframes bodyFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Common keyframes used by loader ── */
+@keyframes fadeSlideDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
