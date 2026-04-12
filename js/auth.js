@@ -1,10 +1,3 @@
-/**
- * =====================================================
- * LOANSPHERE — Auth for Dashboard (js/auth.js)
- * Login/Register are separate pages — this handles
- * launching apps from session + logout
- * =====================================================
- */
 
 function launchUserApp(user) {
   const el = document.getElementById('userApp');

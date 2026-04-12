@@ -1,29 +1,3 @@
-/**
- * =====================================================
- * LOANSPHERE — Database Layer (js/db.js)
- *
- * ✅ Uses Supabase JS via CDN (NO Node.js, NO npm,
- *    NO package.json needed — pure HTML/CSS/JS)
- *
- * ✅ Fixes "TypeError: Failed to fetch":
- *    - Loads Supabase from CDN automatically
- *    - Uses correct anon key from localStorage
- *    - All tables have RLS disabled + full grants
- *
- * ✅ Fixes "Cannot modify" / insert errors:
- *    - All tables have INSERT policies
- *    - Uses public schema explicitly
- *
- * HOW SUPABASE WORKS IN THIS PROJECT:
- * ------------------------------------
- * ChatGPT shows Node.js code like:
- *   import { createClient } from '@supabase/supabase-js'  ← WRONG for HTML
- *
- * We use the CDN version instead (correct for HTML):
- *   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/...">
- *   window.supabase.createClient(url, key)  ← CORRECT
- * =====================================================
- */
 
 const STATE = {
   supabase:            null,
@@ -36,11 +10,7 @@ const STATE = {
   allLoans:            [],
 };
 
-/* ════════════════════════════════════════════════════
-   SUPABASE CDN LOADER
-   Loads Supabase JS library from CDN automatically.
-   No npm, no package.json, no Node.js needed.
-════════════════════════════════════════════════════ */
+
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     if (document.querySelector(`script[src="${src}"]`)) { resolve(); return; }
@@ -53,7 +23,7 @@ function loadScript(src) {
 }
 
 async function initSupabase(url, key) {
-  // Validate inputs before trying to connect
+
   if (!url || !url.includes('supabase.co')) {
     throw new Error('Invalid Supabase URL. Must contain "supabase.co"');
   }
@@ -61,10 +31,10 @@ async function initSupabase(url, key) {
     throw new Error('Invalid Supabase API key. Check your anon/public key.');
   }
 
-  // Load the Supabase JS SDK from CDN (no npm needed)
+
   await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js');
 
-  // Create the Supabase client using the CDN version
+
   STATE.supabase = window.supabase.createClient(url.trim(), key.trim(), {
     auth: {
       autoRefreshToken: true,
@@ -86,22 +56,22 @@ async function initSupabase(url, key) {
   return STATE.supabase;
 }
 
-/* ── Password hashing (SHA-256 — no libraries needed) ── */
+
 async function hashPassword(pw) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pw));
   return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-/* ── Universal error handler ── */
+
 function handleDbError(error, tableName) {
   if (!error) return;
   const msg = error.message || error.toString() || '';
   const code = error.code || '';
 
-  // PGRST116 = no rows found (not a real error)
+
   if (code === 'PGRST116') return;
 
-  // Foreign key error — old broken table
+
   if (msg.includes('foreign key') || msg.includes('_fkey') || msg.includes('violates')) {
     throw new Error(
       `Table "${tableName}" has a broken structure from an old version. ` +
@@ -109,7 +79,7 @@ function handleDbError(error, tableName) {
     );
   }
 
-  // RLS / permission error — policy not set
+
   if (msg.includes('new row violates') || msg.includes('permission denied') || code === '42501') {
     throw new Error(
       `Permission denied on table "${tableName}". ` +
@@ -117,7 +87,7 @@ function handleDbError(error, tableName) {
     );
   }
 
-  // Failed to fetch — network / CORS / wrong URL
+
   if (msg.includes('Failed to fetch') || msg.includes('fetch')) {
     throw new Error(
       `Cannot connect to Supabase. Please check:\n` +
@@ -131,16 +101,14 @@ function handleDbError(error, tableName) {
   throw new Error(msg || `Database error on "${tableName}"`);
 }
 
-/* ════════════════════════════════════════════════════
-   ALL DATABASE QUERIES
-════════════════════════════════════════════════════ */
+
 const DB = {
   sb() {
     if (!STATE.supabase) throw new Error('Database not connected. Please complete the setup wizard.');
     return STATE.supabase;
   },
 
-  /* ── REGISTRATION ── */
+
   async registerUser(data) {
     const hashedPw = await hashPassword(data.password);
     const row = {
@@ -186,7 +154,7 @@ const DB = {
     return result;
   },
 
-  /* ── LOGIN ── */
+
   async loginUser(email, password) {
     const hashedPw = await hashPassword(password);
     const { data, error } = await this.sb()
@@ -205,7 +173,7 @@ const DB = {
     try { await this.sb().auth.signOut(); } catch(e) {}
   },
 
-  /* ── PROFILES ── */
+
   async getProfileById(id) {
     const { data, error } = await this.sb()
       .from('profiles').select('*').eq('id', id).single();
@@ -249,7 +217,7 @@ const DB = {
     return count || 0;
   },
 
-  /* ── BLOCKED EMAILS ── */
+
   async isEmailBlocked(email) {
     try {
       const { data } = await this.sb()
@@ -283,7 +251,7 @@ const DB = {
     if (error) handleDbError(error, 'blocked_emails');
   },
 
-  /* ── LOANS ── */
+
   async createLoan(d) {
     const { data, error } = await this.sb()
       .from('loans').insert([d]).select().single();
@@ -314,7 +282,7 @@ const DB = {
     return data;
   },
 
-  /* ── BILLING ── */
+
   async getBillingByUser(id) {
     const { data } = await this.sb()
       .from('billing').select('*').eq('user_id', id)
@@ -362,7 +330,7 @@ const DB = {
     if (error) handleDbError(error, 'savings_txns');
   },
 
-  /* ── MONEY BACK ── */
+
   async createMoneyBack(d) {
     const { error } = await this.sb().from('money_back').insert([d]);
     if (error) handleDbError(error, 'money_back');
@@ -375,7 +343,7 @@ const DB = {
     return data || [];
   },
 
-  /* ── EARNINGS ── */
+
   async getAllEarnings() {
     const { data } = await this.sb()
       .from('earnings').select('*').order('created_at', { ascending: false });

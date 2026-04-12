@@ -1,6 +1,4 @@
-/* =====================================================
-   LOANSPHERE — Design System (css/style.css)
-   ===================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
@@ -16,7 +14,7 @@
   --tr:.2s cubic-bezier(.4,0,.2,1);
 }
 
-/* ── Light Theme ─────────────────────────────────────────── */
+
 [data-theme="light"] {
   --bg:      #f0f2fa;
   --bg2:     #e4e8f5;
@@ -32,7 +30,7 @@
   --shadow-lg: 0 16px 64px rgba(0,0,0,.15);
 }
 
-/* ── Smooth theme transition on ALL elements ── */
+
 *, *::before, *::after {
   transition:
     background-color .3s ease,
@@ -40,7 +38,7 @@
     color .3s ease,
     box-shadow .3s ease !important;
 }
-/* But keep animations fast */
+
 button, a, .nav-item, .filter-btn, .acc-card, .feature-card {
   transition: all .2s cubic-bezier(.4,0,.2,1) !important;
 }
@@ -55,7 +53,7 @@ input,select,textarea{font-family:var(--font);outline:none}
 ::-webkit-scrollbar-track{background:var(--bg2)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 
-/* Buttons */
+
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:var(--r2);font-size:.875rem;font-weight:600;letter-spacing:.2px;transition:all var(--tr);cursor:pointer;border:none}
 .btn-full{width:100%;justify-content:center;padding:13px 20px;font-size:.95rem}
 .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 4px 16px rgba(108,138,255,.25)}
@@ -76,7 +74,7 @@ input,select,textarea{font-family:var(--font);outline:none}
 .icon-btn{background:none;color:var(--text2);font-size:1.1rem;padding:6px;border-radius:8px;transition:all var(--tr)}
 .icon-btn:hover{background:var(--card2);color:var(--text)}
 
-/* Alerts */
+
 .alert{border-radius:var(--r2);padding:10px 14px;font-size:.84rem;margin-bottom:12px;display:none;align-items:flex-start;gap:8px}
 .alert.show{display:flex}
 .alert-info   {background:rgba(96,165,250,.1); border:1px solid rgba(96,165,250,.2); color:var(--blue)}
@@ -84,7 +82,7 @@ input,select,textarea{font-family:var(--font);outline:none}
 .alert-warn   {background:rgba(251,191,36,.1); border:1px solid rgba(251,191,36,.2); color:var(--amber)}
 .alert-success{background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.2); color:var(--green)}
 
-/* Forms */
+
 .form-group{margin-bottom:16px}
 .form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px}
 .req{color:var(--rose)}
@@ -105,7 +103,7 @@ textarea.form-control{resize:vertical;min-height:90px}
 .sec-div{display:flex;align-items:center;gap:12px;margin:22px 0 16px;font-size:.76rem;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--text3)}
 .sec-div::before,.sec-div::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* Status badges */
+
 .status{display:inline-flex;align-items:center;padding:2px 9px;border-radius:20px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px}
 .status-active,.status-approved,.status-completed{background:rgba(52,211,153,.12);color:var(--green)}
 .status-pending{background:rgba(251,191,36,.12);color:var(--amber)}
@@ -113,7 +111,7 @@ textarea.form-control{resize:vertical;min-height:90px}
 .status-paid{background:rgba(96,165,250,.12);color:var(--blue)}
 .status-unpaid{background:rgba(251,191,36,.12);color:var(--amber)}
 
-/* Cards + Tables */
+
 .card{background:var(--card);border-radius:var(--r);border:1px solid var(--border)}
 .card-hd{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:14px 18px;border-bottom:1px solid var(--border)}
 .card-hd h3{font-size:.92rem;font-weight:700}
@@ -129,7 +127,7 @@ tbody tr:last-child td{border-bottom:none}
 .es-icon{font-size:2.2rem;margin-bottom:6px;opacity:.6}
 .empty-state p{font-size:.84rem}
 
-/* Filters */
+
 .filters{display:flex;gap:5px;flex-wrap:wrap}
 .filter-btn{padding:5px 13px;border-radius:20px;background:var(--bg3);color:var(--text2);font-size:.78rem;font-weight:500;cursor:pointer;border:1px solid var(--border);transition:all var(--tr)}
 .filter-btn:hover{background:var(--card2);color:var(--text)}
@@ -137,7 +135,6 @@ tbody tr:last-child td{border-bottom:none}
 .search-wrap input{padding:7px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--card2);color:var(--text);font-size:.83rem;width:220px;transition:border-color var(--tr)}
 .search-wrap input:focus{border-color:var(--accent);outline:none}
 
-/* Account type cards */
 .account-types{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .acc-card{padding:14px;border-radius:var(--r);border:2px solid var(--border2);background:var(--card);cursor:pointer;transition:all var(--tr);text-align:center}
 .acc-card:hover{border-color:var(--accent);background:var(--card2)}
@@ -146,19 +143,18 @@ tbody tr:last-child td{border-bottom:none}
 .acc-card .tier-name{font-weight:700;font-size:.9rem;margin-bottom:3px}
 .acc-card .tier-desc{font-size:.76rem;color:var(--text2)}
 
-/* Upload */
+
 .upload-area{border:2px dashed var(--border2);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:all var(--tr);background:var(--card)}
 .upload-area:hover{border-color:var(--accent);background:rgba(108,138,255,.05)}
 .upload-icon{font-size:1.6rem;margin-bottom:6px}
 .upload-area p{font-size:.85rem;font-weight:500;margin-bottom:2px}
 .upload-area span{font-size:.73rem;color:var(--text3)}
 
-/* Toast */
+
 #toast{position:fixed;bottom:22px;right:22px;z-index:9999;background:var(--card2);border:1px solid var(--border2);border-radius:var(--r);padding:13px 18px;display:none;align-items:center;gap:9px;box-shadow:var(--shadow-lg);min-width:260px;max-width:400px;animation:slideUp .3s cubic-bezier(.4,0,.2,1)}
 @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-/* Modals */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);z-index:1000;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.active{display:flex;animation:fadeIn .2s ease}
 .modal{background:var(--card);border-radius:var(--r);border:1px solid var(--border);width:100%;max-width:470px;box-shadow:var(--shadow-lg);max-height:90vh;overflow-y:auto}
@@ -170,7 +166,7 @@ tbody tr:last-child td{border-bottom:none}
 .modal-body{padding:18px 22px}
 .modal-footer{display:flex;gap:9px;padding:16px 22px;justify-content:flex-end;border-top:1px solid var(--border)}
 
-/* Loan calc */
+
 .term-btns{display:flex;gap:7px;flex-wrap:wrap}
 .loan-calc{background:var(--bg3);border-radius:var(--r);padding:14px 18px;margin:14px 0;border:1px solid var(--border)}
 .calc-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--text3);margin-bottom:10px}
@@ -179,14 +175,14 @@ tbody tr:last-child td{border-bottom:none}
 .calc-row.total-row{font-weight:700;color:var(--accent3)}
 .neg{color:var(--rose)}.pos{color:var(--green)}
 
-/* Password strength */
+
 .pw-bar-wrap{height:4px;background:var(--border2);border-radius:2px;overflow:hidden;margin-top:6px}
 .pw-bar{height:100%;width:0;transition:width .3s,background .3s;border-radius:2px}
 .pw-labels{display:flex;justify-content:space-between;align-items:center;margin-top:3px}
 .pw-hint{font-size:.68rem;color:var(--text3)}
 .pw-level{font-size:.72rem;font-weight:700}
 
-/* Profile */
+
 .profile-hero{display:flex;align-items:center;gap:18px;padding:20px;border-bottom:1px solid var(--border)}
 .profile-av{width:68px;height:68px;border-radius:18px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.3rem;font-weight:700;color:#fff;flex-shrink:0}
 .profile-name{font-size:1.15rem;font-weight:700;margin-bottom:2px}
@@ -195,7 +191,7 @@ tbody tr:last-child td{border-bottom:none}
 .detail-item label{font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.4px;color:var(--text3)}
 .detail-item p{font-size:.87rem;color:var(--text);margin-top:1px}
 
-/* Responsive */
+
 @media(max-width:1024px){.stats-grid{grid-template-columns:repeat(2,1fr)!important}.two-col{grid-template-columns:1fr}}
 @media(max-width:768px){.form-row{grid-template-columns:1fr}.sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.main{width:100%}.page{padding:18px}.stats-grid{grid-template-columns:1fr 1fr!important}}
 @media(max-width:480px){.stats-grid{grid-template-columns:1fr!important}.account-types{grid-template-columns:1fr}.profile-details{grid-template-columns:1fr}}

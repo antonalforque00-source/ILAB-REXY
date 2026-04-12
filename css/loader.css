@@ -1,10 +1,4 @@
-/* =====================================================
-   LOANSPHERE — Page Loader (css/loader.css)
-   Intro loader: "CODE NI ALFORQUE"
-   Smooth loading animation on every page
-   ===================================================== */
 
-/* ── Intro Loader Overlay ── */
 #introLoader {
   position: fixed;
   inset: 0;
@@ -23,7 +17,7 @@
   pointer-events: none;
 }
 
-/* ── Loader Background Effects ── */
+
 .loader-bg {
   position: absolute;
   inset: 0;
@@ -64,7 +58,7 @@
   50%       { transform: scale(1.15) translateY(-20px); }
 }
 
-/* ── Grid lines decoration ── */
+
 .loader-grid {
   position: absolute;
   inset: 0;
@@ -80,7 +74,7 @@
   50%       { opacity: 0.4; }
 }
 
-/* ── Center content ── */
+
 .loader-content {
   position: relative;
   z-index: 2;
@@ -90,7 +84,7 @@
   gap: 0;
 }
 
-/* ── Logo Icon ── */
+
 .loader-icon {
   width: 80px;
   height: 80px;
@@ -112,7 +106,7 @@
   50%       { box-shadow: 0 0 60px rgba(108,138,255,.7), 0 0 120px rgba(108,138,255,.35); transform: scale(1.05); }
 }
 
-/* ── Brand Name ── */
+
 .loader-brand {
   font-family: 'Playfair Display', serif;
   font-size: 2.6rem;
@@ -123,7 +117,7 @@
   animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .2s both;
 }
 
-/* ── Tagline ── */
+
 .loader-tagline {
   font-family: 'Outfit', sans-serif;
   font-size: .82rem;
@@ -135,7 +129,6 @@
   animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .35s both;
 }
 
-/* ── "CODE NI ALFORQUE" badge ── */
 .loader-signature {
   display: inline-flex;
   align-items: center;
@@ -170,7 +163,7 @@
   color: #8ba3ff;
 }
 
-/* ── Progress Bar ── */
+
 .loader-progress-wrap {
   width: 280px;
   animation: fadeSlideDown .8s cubic-bezier(.4,0,.2,1) .6s both;
@@ -216,7 +209,7 @@
   text-transform: uppercase;
 }
 
-/* ── Spinner dots ── */
+
 .loader-dots {
   display: flex;
   gap: 8px;
@@ -241,7 +234,7 @@
   40%            { transform: scale(1.6); opacity: 1;  }
 }
 
-/* ── Slide-out transition ── */
+
 .loader-slide-out {
   animation: loaderSlideOut .6s cubic-bezier(.4,0,.2,1) forwards !important;
 }
@@ -251,7 +244,7 @@
   100% { transform: translateY(-100%); opacity: 0; }
 }
 
-/* ── Page transition overlay (on navigation) ── */
+
 #pageTransition {
   position: fixed;
   inset: 0;
@@ -281,7 +274,7 @@
   to   { transform: scaleX(0); transform-origin: right; opacity: 0; }
 }
 
-/* ── Fade-in for page body content ── */
+
 .page-fade-in {
   animation: bodyFadeIn .5s ease .1s both;
 }
@@ -291,7 +284,7 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── Common keyframes used by loader ── */
+
 @keyframes fadeSlideDown {
   from { opacity: 0; transform: translateY(-16px); }
   to   { opacity: 1; transform: translateY(0); }

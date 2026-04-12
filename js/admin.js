@@ -1,9 +1,3 @@
-/**
- * =====================================================
- * LOANSPHERE v3 — Admin Pages (js/admin.js)
- * Uses 'profiles' table (linked to Supabase Auth)
- * =====================================================
- */
 
 async function loadAdminPage(name) {
   switch(name) {

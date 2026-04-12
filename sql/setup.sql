@@ -1,11 +1,6 @@
--- ================================================================
--- LOANSPHERE — Complete Database Setup
--- ================================================================
--- Run this ENTIRE file in:
--- Supabase → SQL Editor → New Query → Paste → Run
--- ================================================================
 
--- Step 1: Drop all old tables (removes all broken stuff)
+
+
 drop table if exists blocked_emails  cascade;
 drop table if exists money_back      cascade;
 drop table if exists savings_txns    cascade;
@@ -16,11 +11,6 @@ drop table if exists profiles        cascade;
 drop table if exists users           cascade;
 drop function if exists handle_new_user() cascade;
 
--- ═══════════════════════════════════════════════════════
--- Step 2: Create all 7 tables
--- ═══════════════════════════════════════════════════════
-
--- TABLE 1: profiles (main user table)
 create table public.profiles (
   id               uuid        default gen_random_uuid() primary key,
   account_type     text        not null default 'Basic',
@@ -48,7 +38,7 @@ create table public.profiles (
   created_at       timestamptz default now()
 );
 
--- TABLE 2: loans
+
 create table public.loans (
   id                uuid        default gen_random_uuid() primary key,
   user_id           uuid        references public.profiles(id) on delete cascade,
@@ -64,7 +54,7 @@ create table public.loans (
   created_at        timestamptz default now()
 );
 
--- TABLE 3: billing
+
 create table public.billing (
   id           uuid        default gen_random_uuid() primary key,
   user_id      uuid        references public.profiles(id) on delete cascade,
@@ -79,7 +69,7 @@ create table public.billing (
   created_at   timestamptz default now()
 );
 
--- TABLE 4: savings_txns
+
 create table public.savings_txns (
   id         uuid        default gen_random_uuid() primary key,
   user_id    uuid        references public.profiles(id) on delete cascade,
@@ -91,7 +81,7 @@ create table public.savings_txns (
   created_at timestamptz default now()
 );
 
--- TABLE 5: money_back
+
 create table public.money_back (
   id         uuid        default gen_random_uuid() primary key,
   user_id    uuid        references public.profiles(id) on delete cascade,
@@ -100,7 +90,7 @@ create table public.money_back (
   created_at timestamptz default now()
 );
 
--- TABLE 6: earnings (standalone — no user link)
+
 create table public.earnings (
   id          uuid        default gen_random_uuid() primary key,
   description text        not null,
@@ -108,7 +98,7 @@ create table public.earnings (
   created_at  timestamptz default now()
 );
 
--- TABLE 7: blocked_emails (standalone — no user link)
+
 create table public.blocked_emails (
   id         uuid        default gen_random_uuid() primary key,
   email      text        unique not null,
@@ -116,10 +106,7 @@ create table public.blocked_emails (
   created_at timestamptz default now()
 );
 
--- ═══════════════════════════════════════════════════════
--- Step 3: Disable Row Level Security on ALL tables
--- This is the MOST IMPORTANT step to fix "Failed to fetch"
--- ═══════════════════════════════════════════════════════
+
 alter table public.profiles       disable row level security;
 alter table public.loans          disable row level security;
 alter table public.billing        disable row level security;
@@ -128,10 +115,7 @@ alter table public.money_back     disable row level security;
 alter table public.earnings       disable row level security;
 alter table public.blocked_emails disable row level security;
 
--- ═══════════════════════════════════════════════════════
--- Step 4: Grant FULL access to anon and authenticated
--- This allows the browser (anon key) to read and write
--- ═══════════════════════════════════════════════════════
+
 grant all privileges on public.profiles       to anon;
 grant all privileges on public.loans          to anon;
 grant all privileges on public.billing        to anon;
@@ -148,102 +132,4 @@ grant all privileges on public.money_back     to authenticated;
 grant all privileges on public.earnings       to authenticated;
 grant all privileges on public.blocked_emails to authenticated;
 
--- ═══════════════════════════════════════════════════════
--- Step 5: Add INSERT policies (fixes "Cannot modify" errors)
--- These allow the browser to insert data into each table
--- ═══════════════════════════════════════════════════════
-
--- Profiles: allow anyone to register
-create policy "Allow insert for registration"
-  on public.profiles for insert
-  with check (true);
-
-create policy "Allow select own profile"
-  on public.profiles for select
-  using (true);
-
-create policy "Allow update own profile"
-  on public.profiles for update
-  using (true);
-
--- Loans
-create policy "Allow insert loans"
-  on public.loans for insert
-  with check (true);
-
-create policy "Allow select loans"
-  on public.loans for select
-  using (true);
-
-create policy "Allow update loans"
-  on public.loans for update
-  using (true);
-
--- Billing
-create policy "Allow insert billing"
-  on public.billing for insert
-  with check (true);
-
-create policy "Allow select billing"
-  on public.billing for select
-  using (true);
-
-create policy "Allow update billing"
-  on public.billing for update
-  using (true);
-
--- Savings
-create policy "Allow insert savings"
-  on public.savings_txns for insert
-  with check (true);
-
-create policy "Allow select savings"
-  on public.savings_txns for select
-  using (true);
-
-create policy "Allow update savings"
-  on public.savings_txns for update
-  using (true);
-
--- Money back
-create policy "Allow insert money_back"
-  on public.money_back for insert
-  with check (true);
-
-create policy "Allow select money_back"
-  on public.money_back for select
-  using (true);
-
--- Earnings
-create policy "Allow insert earnings"
-  on public.earnings for insert
-  with check (true);
-
-create policy "Allow select earnings"
-  on public.earnings for select
-  using (true);
-
--- Blocked emails
-create policy "Allow insert blocked"
-  on public.blocked_emails for insert
-  with check (true);
-
-create policy "Allow select blocked"
-  on public.blocked_emails for select
-  using (true);
-
-create policy "Allow delete blocked"
-  on public.blocked_emails for delete
-  using (true);
-
--- ================================================================
--- DONE! All 7 tables created with correct permissions.
---
--- What was fixed:
---   "TypeError: Failed to fetch"  → Fixed by correct grants + policies
---   "Cannot modify"               → Fixed by INSERT policies
---   CORS errors                   → Fixed by using Supabase JS SDK (CDN)
---   RLS blocking inserts          → Fixed by disabling RLS + policies
---
 -- Admin Login: admin / Admin@LoanSphere2024!
--- ================================================================

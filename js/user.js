@@ -1,8 +1,3 @@
-/**
- * =====================================================
- * LOANSPHERE v3 — User Pages (js/user.js)
- * =====================================================
- */
 
 async function loadUserPage(name) {
   if (!STATE.currentUser) return;

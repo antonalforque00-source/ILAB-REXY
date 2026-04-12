@@ -2,18 +2,16 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LoanSphere — Sign In</title>
+<title>Sign In</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../css/style.css">
 <link rel="stylesheet" href="../css/auth.css">
   <link rel="stylesheet" href="../css/loader.css">
 </head>
 <body>
-<!-- ═══════════════════════════════════════════════
-     INTRO LOADER — appears on every page load
-═══════════════════════════════════════════════ -->
+
 <div id="introLoader">
-  <!-- Background effects -->
+
   <div class="loader-bg">
     <div class="loader-grid"></div>
     <div class="loader-orb loader-orb-1"></div>
@@ -21,25 +19,25 @@
     <div class="loader-orb loader-orb-3"></div>
   </div>
 
-  <!-- Center content -->
+
   <div class="loader-content">
-    <!-- Logo icon -->
+
     <div class="loader-icon">₱</div>
 
-    <!-- Brand name -->
+
     <div class="loader-brand">LoanSphere</div>
 
-    <!-- Sub tagline -->
+   
     <div class="loader-tagline">Loan Management System</div>
 
-    <!-- CODE NI ALFORQUE badge -->
+   
     <div class="loader-signature">
       <div class="loader-sig-dot"></div>
       <span class="loader-sig-text">CODE NI ALFORQUE</span>
       <div class="loader-sig-dot"></div>
     </div>
 
-    <!-- Progress bar -->
+
     <div class="loader-progress-wrap">
       <div class="loader-progress-track">
         <div class="loader-progress-fill" id="loaderFill"></div>
@@ -47,7 +45,7 @@
       <div class="loader-progress-text" id="loaderMsg">Initializing LoanSphere...</div>
     </div>
 
-    <!-- Bouncing dots -->
+
     <div class="loader-dots">
       <div class="loader-dot"></div>
       <div class="loader-dot"></div>
@@ -56,11 +54,11 @@
   </div>
 </div>
 
-<!-- Page transition overlay (on navigation) -->
+
 <div id="pageTransition"></div>
 
 <div class="auth-page">
-  <!-- LEFT PANEL -->
+ 
   <div class="auth-left theme-user">
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
@@ -77,7 +75,7 @@
     </div>
   </div>
 
-  <!-- RIGHT PANEL — Login Form -->
+
   <div class="auth-right">
     <div class="auth-form-box">
       <div class="auth-logo-sm">
@@ -120,7 +118,7 @@
 <script src="../js/db.js"></script>
 <script src="../js/utils.js"></script>
 <script>
-/* Restore theme */
+
 
 
 function togglePassField(id, btn) {
@@ -135,7 +133,7 @@ function showErr(msg) {
   document.getElementById('loginLoad').classList.remove('show');
 }
 
-// Apply theme + icon on load
+
 
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim().toLowerCase();

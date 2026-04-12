@@ -1,17 +1,10 @@
-/**
- * =====================================================
- * LOANSPHERE — Utilities (js/utils.js)
- * Shared helpers used across all pages
- * =====================================================
- */
 
-/* ── Formatting ── */
 function peso(n) { return '₱' + Number(n || 0).toLocaleString('en-PH', { minimumFractionDigits: 2 }); }
 function fmtDate(d) { if (!d) return '—'; return new Date(d).toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' }); }
 function genTxnId() { return 'TXN-' + Math.random().toString(36).toUpperCase().substr(2, 8); }
 function statusBadge(s) { const c = (s || '').toLowerCase(); return `<span class="status status-${c}">${s}</span>`; }
 
-/* ── Toast Notification ── */
+
 function toast(msg, icon = 'ok') {
   const t   = document.getElementById('toast');
   const ico = document.getElementById('toastIcon');
@@ -25,11 +18,11 @@ function toast(msg, icon = 'ok') {
   t._timer = setTimeout(() => { t.style.display = 'none'; }, 4000);
 }
 
-/* ── Modal helpers ── */
+
 function showModal(id)  { document.getElementById(id)?.classList.add('active');    }
 function closeModal(id) { document.getElementById(id)?.classList.remove('active'); }
 
-/* ── Theme toggle ── */
+
 function toggleTheme() {
   const isLight = document.body.getAttribute('data-theme') === 'light';
   const next    = isLight ? '' : 'light';
@@ -54,10 +47,10 @@ function applyStoredTheme() {
   updateThemeIcons(saved);
 }
 
-/* ── Sidebar toggle ── */
+
 function toggleSidebar() { document.getElementById('sidebar')?.classList.toggle('open'); }
 
-/* ── Password visibility ── */
+
 function togglePass(inputId, btn) {
   const inp = document.getElementById(inputId);
   if (!inp) return;
@@ -65,7 +58,7 @@ function togglePass(inputId, btn) {
   btn.textContent = inp.type === 'password' ? '👁' : '🙈';
 }
 
-/* ── Age auto-calculate ── */
+
 function calcAge() {
   const bday = document.getElementById('regBday')?.value;
   if (!bday) return;
@@ -74,14 +67,14 @@ function calcAge() {
   if (el) el.value = age >= 0 ? age : '';
 }
 
-/* ── Account type selection ── */
+
 function selectAccType(el, type) {
   document.querySelectorAll('.acc-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
   document.getElementById('selectedType').value = type;
 }
 
-/* ── Password strength ── */
+
 function validatePassword(password) {
   const errors = [];
   if (password.length < 8)             errors.push('at least 8 characters');
@@ -113,7 +106,7 @@ function checkPasswordStrength(inputId, barId, labelId) {
   if (lbl) { lbl.textContent = level.label; lbl.style.color = level.color; }
 }
 
-/* ── Loan calculator ── */
+
 function selectTerm(btn, months) {
   document.querySelectorAll('#applyLoanModal .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -136,7 +129,7 @@ function updateLoanCalc() {
   document.getElementById('calcTotal').textContent    = peso(amount);
 }
 
-/* ── Filter/search helpers ── */
+
 function filterUsers(btn, filter) {
   document.querySelectorAll('#adminUsersPage .filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -156,7 +149,7 @@ function searchUsers(q) {
   renderUsersTable(f, 'all');
 }
 
-/* ── DB status indicator ── */
+
 function updateDbStatus(connected) {
   const dot = document.getElementById('dbDot');
   const txt = document.getElementById('dbStatusText');
@@ -165,7 +158,7 @@ function updateDbStatus(connected) {
   txt.textContent = connected ? 'Connected' : 'Offline';
 }
 
-/* ── Page switchers (for dashboard app) ── */
+
 function switchPage(name) {
   document.querySelectorAll('#userApp .page').forEach(p => p.classList.remove('active'));
   document.getElementById(name + 'Page')?.classList.add('active');
@@ -194,7 +187,6 @@ function switchAdminPage(name) {
   loadAdminPage(name);
 }
 
-/* ── Supabase auto-connect (used by dashboard app) ── */
 async function tryAutoConnect() {
   const url = localStorage.getItem('ls_sb_url');
   const key = localStorage.getItem('ls_sb_key');
