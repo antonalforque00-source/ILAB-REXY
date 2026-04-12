@@ -1,15 +1,11 @@
-# 📤 How to Push LoanSphere to GitHub
 
-Follow these steps carefully. Copy and paste each command into **Git Bash**.
-
----
 
 ## STEP 1 — Install Git (if not installed)
 
 Download from: https://git-scm.com/downloads
 Install with default settings. Then open **Git Bash**.
 
----
+
 
 ## STEP 2 — Create a GitHub Account (if you don't have one)
 
